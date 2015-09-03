@@ -9,7 +9,7 @@ class CheckoutSpec extends FlatSpec with Matchers {
   }
 
   "a basket containing one A" should "cost 50" in {
-    Checkout.priceOf(Basket("A")) should be (50)
+    Checkout.priceOf(Basket("AE")) should be (50)
   }
 
   "a basket containing one A and one B" should "cost 80" in {
