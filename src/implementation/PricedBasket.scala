@@ -1,22 +1,20 @@
 package implementation
 
 object PricedBasket {
-  val prices = List(("AAA", 120), ("BB", 45), ("A", 50), ("B", 30), ("C", 20), ("D", 15))
+  private val prices = List(("AAA", 120), ("BB", 45), ("A", 50), ("B", 30), ("C", 20), ("D", 15))
 
   def unapply(basket: Basket) = {
-    def matchItems(items: String, price: Int) = {
-      val sortedContents = basket.contents.sorted
+    prices.map {
+      case (items, price) if contains(basket, items) => Some(Basket(rest(basket, items)), price)
+      case _ => None
+    }.reduceLeft(_ orElse _)
+  }
 
-      if (sortedContents.startsWith(items))
-        Some(Basket(sortedContents.substring(items.length())), price)
-      else None
-    }
+  def rest(basket: Basket, items: String): String = basket match {
+    case Basket(contents) => contents.sorted.substring(items.length())
+  }
 
-    matchItems("AAA", 120) orElse
-      matchItems("BB", 45) orElse
-      matchItems("A", 50) orElse
-      matchItems("B", 30) orElse
-      matchItems("C", 20) orElse
-      matchItems("D", 15)
+  def contains(basket: Basket, items: String): Boolean = basket match {
+    case Basket(contents) => contents.sorted.startsWith(items)
   }
 }
