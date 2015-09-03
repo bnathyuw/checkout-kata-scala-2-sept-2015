@@ -3,13 +3,8 @@ package implementation
 object PricedBasket {
   private val prices = List(("AAA", 120), ("BB", 45), ("A", 50), ("B", 30), ("C", 20), ("D", 15))
 
-  def unapply(basket: Basket) = {
-
-    prices.foldLeft(None: Option[(Basket, Int)]) {
-      case (Some(a), _) => Some(a)
-      case (_, (items, price)) if contains(basket, items) => Some(Basket(rest(basket, items)), price)
-      case _ => None
-    }
+  def unapply(basket: Basket) = prices.collectFirst {
+    case (items, value) if contains(basket, items) => (Basket(rest(basket, items)), value)
   }
 
   def rest(basket: Basket, items: String): String = basket match {
