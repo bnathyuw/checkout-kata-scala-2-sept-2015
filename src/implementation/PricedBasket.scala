@@ -4,10 +4,12 @@ object PricedBasket {
   private val prices = List(("AAA", 120), ("BB", 45), ("A", 50), ("B", 30), ("C", 20), ("D", 15))
 
   def unapply(basket: Basket) = {
-    prices.map {
-      case (items, price) if contains(basket, items) => Some(Basket(rest(basket, items)), price)
+
+    prices.foldLeft(None: Option[(Basket, Int)]) {
+      case (Some(a), _) => Some(a)
+      case (_, (items, price)) if contains(basket, items) => Some(Basket(rest(basket, items)), price)
       case _ => None
-    }.reduceLeft(_ orElse _)
+    }
   }
 
   def rest(basket: Basket, items: String): String = basket match {
