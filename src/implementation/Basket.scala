@@ -8,4 +8,8 @@ class Basket(contents: String){
   def contains(items: String): Boolean = {
     contents.sorted.startsWith(items)
   }
+
+  def isEmpty = {
+    contents.isEmpty
+  }
 }

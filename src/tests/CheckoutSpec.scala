@@ -1,6 +1,5 @@
 package tests
-import implementation.Basket
-import implementation.Checkout
+import implementation.{UnknownItemException, Basket, Checkout}
 import org.scalatest._
 
 class CheckoutSpec extends FlatSpec with Matchers {
@@ -9,7 +8,7 @@ class CheckoutSpec extends FlatSpec with Matchers {
   }
 
   "a basket containing one A" should "cost 50" in {
-    Checkout.priceOf(new Basket("AE")) should be (50)
+    Checkout.priceOf(new Basket("A")) should be (50)
   }
 
   "a basket containing one A and one B" should "cost 80" in {
@@ -34,5 +33,11 @@ class CheckoutSpec extends FlatSpec with Matchers {
 
   "a basket containing two special offer bundles" should "cost 165" in {
     Checkout.priceOf(new Basket("ABABA")) should be (165)
+  }
+
+  "an unknown item" should "throw an error" in {
+    intercept[UnknownItemException] {
+      Checkout.priceOf(new Basket("ABCDEDCBA"))
+    }
   }
 }

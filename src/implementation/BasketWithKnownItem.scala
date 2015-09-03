@@ -7,3 +7,4 @@ object BasketWithKnownItem {
     case (items, value) if basket contains items => (basket without items, value)
   }
 }
+
